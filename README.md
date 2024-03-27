@@ -8,9 +8,9 @@ ENA-CLI is a command-line tool designed to facilitate the validation and submiss
 pip install enaCLI
 ```
 
-## [templates](https://github.com/KhadimGueyeKGY/ena-CLI/blob/master/templates/templates.xlsx) or [templates_all](https://github.com/KhadimGueyeKGY/ena-CLI/blob/master/templates/templates_all.xlsx)
+## [templates](https://github.com/KhadimGueyeKgy1/enaCLI/blob/main/templates/templates.xlsx) or [templates_all](https://github.com/KhadimGueyeKgy1/enaCLI/blob/main/templates/templates_all.xlsx)
 
-## [Test Data](https://github.com/KhadimGueyeKGY/ena-CLI/tree/master/test_data)
+## [Test Data](https://github.com/KhadimGueyeKgy1/enaCLI/tree/main/test_data)
 
 ## File Upload Reminder
 Before using the enaCLI for other type of analysis submission (5), ensure you have uploaded your files to ENA using the Webin file uploader. Detailed instructions on how to upload files can be found [here](https://ena-docs.readthedocs.io/en/latest/submit/fileprep/upload.html#uploading-files-to-ena).
