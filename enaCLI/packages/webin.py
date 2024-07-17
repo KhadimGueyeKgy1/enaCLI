@@ -14,6 +14,15 @@ class webin:
             f"-userName '{args.username}'",
             f"-password '{args.password}'"
         ]
+
+        commandsu = [
+            f"java -jar {webin_cli}",
+            f"-context {type}",
+            f"-manifest \"{manifest}\"",
+            f"-inputDir {args.inputDir}",
+            f"-userName su-'{args.username}'",
+            f"-password '{args.password}'"
+        ]
     
         # Add optional arguments if provided
         if args.test:
@@ -26,16 +35,24 @@ class webin:
             subprocess.run(" ".join(command+['-validate']), shell=True, check=True)
             print(f"\033[93m\nValidation successful. {sample}\033[0m")
         except subprocess.CalledProcessError as e:
-            print(f"\033[91m\nValidation error. {sample}\033[0m\nException: {e}")
-            sys.exit()
+            try:
+                subprocess.run(" ".join(commandsu+['-validate']), shell=True, check=True)
+                print(f"\033[93m\nValidation successful. {sample}\033[0m")
+            except subprocess.CalledProcessError as e:
+                print(f"\033[91m\nValidation error. {sample}\033[0m\nException: {e}")
+                sys.exit()
 
         # Execute the command - submission
         try:
             subprocess.run(" ".join(command+['-submit']), shell=True, check=True)
             print(f"\033[93m\nSubmission successful. {sample}\033[0m")
         except subprocess.CalledProcessError as e:
-            print(f"\033[91m\nSubmission error. {sample}\033[0m\nException: {e}")
-            sys.exit()
+            try:
+                subprocess.run(" ".join(commandsu+['-submit']), shell=True, check=True)
+                print(f"\033[93m\nSubmission successful. {sample}\033[0m")
+            except subprocess.CalledProcessError as e:
+                print(f"\033[91m\nSubmission error. {sample}\033[0m\nException: {e}")
+                sys.exit()
         
     def run_submission(result_directory,args, webin_cli):
         try:

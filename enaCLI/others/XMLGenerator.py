@@ -105,3 +105,21 @@ class XMLGenerator:
 
         return output_path
         
+    def filesubmission(args): 
+        try:
+            manifestFile = pd.read_excel(args.manifestFile, sheet_name="Other Analyses", header = 1)
+        except Exception as e:
+            print(f"\033[91mError: reading file {args.manifestFile}.\033[0m\nException: {e}")
+            sys.exit() 
+
+        head = [i for i in manifestFile]
+        print ('\033[93m\n\n------------------------ [ Uploading File ] ------------------------ \n\n\033[0m')
+        for i in range(len(manifestFile[head[0]])):
+            if '#' not in manifestFile[head[0]][i]:
+                try:
+                    curl_command_upload= f'cd {args.inputDir} ; lftp -u {args.username},{args.password} -e "mput {manifestFile["FILES"][i]}; bye" webin2.ebi.ac.uk'
+                    os.system(curl_command_upload)
+                except Exception as e:
+                    print(f"\033[91mFile upload error {manifestFile['FILES'][i]}.\033[0m\nException: {e}")
+                    sys.exit() 
+        print ('\033[93m\n\n------------------------ [ Uploading File - Done] ------------------------ \n\n\033[0m')

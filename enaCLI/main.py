@@ -4,7 +4,7 @@ import pandas as pd
 
 from .packages.XMLGenerator import XML_generator
 from .packages.submission import submission
-from .packages.antibiogram import validation
+from .packages.antibiogram import Validation
 from .packages.webin import webin
 from .others.XMLGenerator import XMLGenerator
 
@@ -15,10 +15,10 @@ from .others.XMLGenerator import XMLGenerator
 import pkg_resources
 
 # Get the path to the webin-cli-7.0.1.jar file
-webin_cli = pkg_resources.resource_filename('enaCLI.packages', 'webin-cli-7.0.1.jar')
+webin_cli = pkg_resources.resource_filename('enaCLI.packages', 'webin-cli-7.3.1.jar')
 
 #webin_cli = '.packages/webin-cli-7.0.1.jar'
-version = '1.0.5'
+version = '1.0.8'
 
 
 def get_args(): # https://docs.python.org/3/library/argparse.html
@@ -274,20 +274,17 @@ def sub_other (result_directory, args):
     if a == 1 :
         print ('\033[93m\n\n------------------------ [ OTHER ANALYSIS Submission ] ------------------------ \n\n\033[0m')
         if args.analysisType == 'AMR_ANTIBIOGRAM' :
+            print (f'\033[93m\n\n------------------------ [ AMR_ANTIBIOGRAM Validation ] ------------------------ \n\n\033[0m')
             for i in range(len(manifestFile[head[0]])):
                 if '#' not in str(manifestFile[head[0]][i]):
                     file_path = os.path.join(args.inputDir, manifestFile['FILES'][i] )
-                    try: 
-                        antibiogram_file = pd.read_csv (file_path, sep='\t')
-                    except Exception as e:
-                        print(f"\033[91mError: reading file {file_path}.\033[0m\nException: {e}")
-                        sys.exit()
-                    validation.validate_biosample_id(antibiogram_file['bioSample_ID'])
-                    validation.validate_antibiotic_name (antibiogram_file['antibiotic_name'])
-                    validation.validate_ast_standard(antibiogram_file['ast_standard'])
-                    validation.validate_resistance_phenotype(antibiogram_file['resistance_phenotype'])
+                    
+                    print (f'\033[93m\n\n------------------------ [ AMR_ANTIBIOGRAM Validation of {file_path} ] ------------------------ \n\n\033[0m')
+                    Validation.validate_csv(file_path)
+                    
+            print ('\033[93m\n\n------------------------ [ AMR_ANTIBIOGRAM Validation - Done ] ------------------------ \n\n\033[0m')
 
-        
+        XMLGenerator.filesubmission(args)
         submission_file = XML_generator.build_submission_xml(args.inputDir)
         submission_set_file= XMLGenerator.other_submission(result_directory, args )
         submission.submit_to_ENA(submission_file , submission_set_file, args , 'ANALYSIS')

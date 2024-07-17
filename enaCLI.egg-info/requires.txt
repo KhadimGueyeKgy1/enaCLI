@@ -1,0 +1,4 @@
+argparse
+Pandas3
+lxml
+openpyxl>=3.1.0

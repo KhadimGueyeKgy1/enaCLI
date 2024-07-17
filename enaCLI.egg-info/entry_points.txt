@@ -1,0 +1,2 @@
+[console_scripts]
+enaCLI = enaCLI.__main__:main

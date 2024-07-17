@@ -1,3 +1,4 @@
 argparse
 pandas
 lxml
+numpy==1.23.5
